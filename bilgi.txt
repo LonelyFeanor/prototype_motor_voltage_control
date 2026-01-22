@@ -3,7 +3,7 @@ Motorların her biri ayrı ayrı zorlanma düzeyi %50yi bulursa (maks çekebilec
 bu sınırın altında %5o'nin yani 12V çekecek
 
 /GÜÇKAYNAĞI/
-24V 40A kaynak gerekiyor (arduino mega 9V ile beslenecek)
+24V 50A kaynak gerekiyor (arduino mega 9V ile beslenecek)
 
 Matematik (Teorik Sınır):4 Motor * 10A (Anma/Zorlanma Akımı) = 40 Amper. Yani robotun en zorlandığı an tam 40A çekecek.
 Mühendislik (Güvenlik Payı):Bir sistemi tam sınırında (40A ihtiyaca 40A kaynak) çalıştırmak risklidir. Kaynak ısınır, verim düşer.Bu yüzden %20-%25 güvenlik payı ekledik. 40A + %25 ~= 50A .
