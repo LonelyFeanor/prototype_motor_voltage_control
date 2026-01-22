@@ -1,0 +1,36 @@
+/MANTIK/
+Motorların her biri ayrı ayrı zorlanma düzeyi %50yi bulursa (maks çekebileceği akıma oranlı çektiği akım) 24V'a geçecek,
+bu sınırın altında %5o'nin yani 12V çekecek
+
+/GÜÇKAYNAĞI/
+24V 40A kaynak gerekiyor (arduino mega 9V ile beslenecek)
+
+Matematik (Teorik Sınır):4 Motor * 10A (Anma/Zorlanma Akımı) = 40 Amper. Yani robotun en zorlandığı an tam 40A çekecek.
+Mühendislik (Güvenlik Payı):Bir sistemi tam sınırında (40A ihtiyaca 40A kaynak) çalıştırmak risklidir. Kaynak ısınır, verim düşer.Bu yüzden %20-%25 güvenlik payı ekledik. 40A + %25 ~= 50A .
+
+/SİGORTA/
+40A araçlarda kullanılan tarzda bıçak sigorta gerekli (Automative Blade Fuse) sonradan artırılabilir 
+ 
+Neden "Bıçak Sigorta" (Blade Fuse) Kullanmalıyız?
+Yüksek Akım Kapasitesi: 40A akımı ısınmadan, gevşemeden taşıyabilir. Temas yüzeyi geniştir.
+DC Uyumluluğu: 32V'a kadar çalışır (Senin 24V sistemin için mükemmel).
+Titreşime Dayanıklı: Robot hareket edince yerinden oynamaz.
+Renk Kodu: 40 Amper olanlar genellikle Turuncu renktedir. (Standart ATO/ATC boyutu alınmalı)
+
+Oto sigortalarının (Bıçak sigorta) güzel bir özelliği daha vardır: "Slow Blow" (Yavaş Atma) karakteristiği.
+40A'lik bir sigortadan 45A geçirirsen hemen "çıt" diye atmaz, atması 15-20 saniye sürer.
+Ancak 80A geçirirsen (Kısa devre) "tak" diye 0.1 saniyede atar.
+Bu tolerans, robotun rampada anlık zorlanmaları için yeterlidir.
+
+/BAĞLANTISAL/
+Eğer sürücüden arduino mega akım değeri okumazsa:
+Bu konu biraz teknik, BTS7960B modülünün yapısıyla ilgili.Olay Ne? 
+Sürücüdeki R_IS ve L_IS pinleri aslında dışarıya Akım (Amper) verir. Ama Arduino sadece Voltaj (Volt) okuyabilir. Ohm kanununa göre (V = I * R), akımı voltaja çevirmek için bir dirence ihtiyaç vardır.
+İyi Haber: Piyasada satılan o siyah/kırmızı büyük soğutuculu BTS7960 modüllerinin (IBT-2) üzerinde genellikle bu direnç fabrikasyon olarak lehimlidir (Genelde 1kΩ - 10kΩ arası).
+Ne Yapmalısın?Önce Dirençsiz Dene: Şu anki kurulumunda R_IS pinini doğrudan Arduino'nun A0 pinine bağladın ya, bu şekilde sistemi çalıştır.Seri Portu İzle: Kod çalışırken ekranda "Okunan Değer" kısmında mantıklı sayılar (0 ile 1023 arasında değişen, yük bindirince artan sayılar) görüyorsan ekstra dirence ihtiyacın YOKTUR. Modülün içindeki direnç işini yapıyordur.Eğer Ekranda Hep 0 veya Çok Düşük Sayılar Varsa: O zaman harici direnç gerekir.Nereye: Arduino'nun o analog pini (örn: A0) ile GND arasına.Değeri: 1kΩ veya 10kΩ bir direnç. (Buna "Pull-down direnci" denir).
+
+/KOD/
+Bir Şey Değişebilir (İleride):
+Sistemi kurup çalıştırdığında sadece LOAD_THRESHOLD_ON = 350 sayısını değiştirmen gerekebilir.
+Eğer motorlar çok çabuk 24V'a geçiyorsa bu sayıyı artırırsın (örn: 500).
+Eğer motorlar zorlansa bile 24V'a geçmiyorsa bu sayıyı azaltırsın (örn: 200).

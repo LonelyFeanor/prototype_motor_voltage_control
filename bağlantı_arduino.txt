@@ -1,0 +1,5 @@
+Motor: RPWM, LPWM, R_IS (İleri Akım), L_IS (Geri Akım)
+(Motor 1): Pin 9, Pin 8, A0, A1
+(Motor 2): Pin 7, Pin 6, A2, A3
+(Motor 3): Pin 5, Pin 4, A4, A5
+(Motor 4): Pin 3, Pin 2, A8, A9
